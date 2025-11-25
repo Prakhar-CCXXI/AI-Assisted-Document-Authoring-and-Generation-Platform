@@ -1,0 +1,1125 @@
+{% extends "base.html" %}
+
+{% block title %}Project Editor - {{ project.name }}{% endblock %}
+
+{% block container_class %}project-editor-container{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-editor-container {
+        max-width: 1200px;
+    }
+    
+    .editor-header {
+        background: #FF6B35; /* Vibrant orange */
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+    }
+    
+    .section-card {
+        background: white;
+        border: 2px solid #E8DCC6; /* Beige border */
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .section-card:hover {
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+        border-color: #FF6B35;
+    }
+    
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #E8DCC6; /* Beige border */
+    }
+    
+    .section-title-input {
+        flex: 1;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 8px;
+        border: 2px solid #E8DCC6; /* Beige border */
+        border-radius: 5px;
+        margin-right: 10px;
+        background: #FAF8F3; /* Cream background */
+        color: #2C2C2C;
+    }
+    
+    .section-title-input:focus {
+        outline: none;
+        border-color: #FF6B35; /* Orange focus */
+        background: white;
+    }
+    
+    .section-number {
+        background: #FF6B35; /* Orange */
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-right: 10px;
+    }
+    
+    .content-editor {
+        width: 100%;
+        min-height: 200px;
+        padding: 15px;
+        border: 2px solid #E8DCC6; /* Beige border */
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        resize: vertical;
+        margin-bottom: 15px;
+        background: #FAF8F3; /* Cream background */
+        color: #2C2C2C;
+    }
+    
+    .content-editor:focus {
+        outline: none;
+        border-color: #FF6B35; /* Orange focus */
+        background: white;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+    
+    .btn-small {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-generate {
+        background: #FF6B35; /* Orange */
+        color: white;
+        display: inline-block !important;
+        visibility: visible !important;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(255, 107, 53, 0.3);
+    }
+    
+    .btn-generate:hover {
+        background: #ff7d4d; /* Lighter orange */
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(255, 107, 53, 0.4);
+    }
+    
+    .btn-generate:active {
+        transform: translateY(0);
+        background: #e55a2b;
+    }
+    
+    .btn-refine {
+        background: #E8DCC6; /* Beige */
+        color: #2C2C2C; /* Dark gray text */
+        border: 2px solid #FF6B35;
+    }
+    
+    .btn-refine:hover {
+        background: #FF6B35; /* Orange on hover */
+        color: white;
+    }
+    
+    .refinement-panel {
+        background: #FAF8F3; /* Cream background */
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        display: none;
+        border: 2px solid #E8DCC6; /* Beige border */
+    }
+    
+    .refinement-panel.active {
+        display: block;
+    }
+    
+    .refinement-input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #E8DCC6; /* Beige border */
+        border-radius: 5px;
+        margin-bottom: 10px;
+        background: white;
+        color: #2C2C2C;
+        font-size: 14px;
+    }
+    
+    .refinement-input:focus {
+        outline: none;
+        border-color: #FF6B35; /* Orange focus */
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+    }
+    
+    .feedback-panel {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 2px solid #E8DCC6; /* Beige border */
+    }
+    
+    .like-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn-like, .btn-dislike {
+        padding: 8px 20px;
+        border: 2px solid #E8DCC6; /* Beige border */
+        border-radius: 5px;
+        cursor: pointer;
+        background: white;
+        transition: all 0.2s ease;
+        color: #2C2C2C;
+    }
+    
+    .btn-like:hover, .btn-dislike:hover {
+        border-color: #FF6B35;
+        background: #FAF8F3;
+    }
+    
+    .btn-like.active {
+        background: #FF6B35; /* Orange */
+        color: white;
+        border-color: #FF6B35;
+    }
+    
+    .btn-dislike.active {
+        background: #2C2C2C; /* Dark gray */
+        color: white;
+        border-color: #FF6B35;
+    }
+    
+    .comment-box {
+        flex: 1;
+        padding: 8px;
+        border: 2px solid #E8DCC6; /* Beige border */
+        border-radius: 5px;
+        font-size: 14px;
+        background: #FAF8F3; /* Cream background */
+        color: #2C2C2C;
+    }
+    
+    .comment-box:focus {
+        outline: none;
+        border-color: #FF6B35; /* Orange focus */
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        background: white;
+    }
+    
+    .loading {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+    
+    .add-section-container {
+        max-width: 100%;
+    }
+    
+    .add-section-container input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Responsive Design for Project Editor */
+    @media (max-width: 1024px) {
+        .project-editor-container {
+            max-width: 100%;
+        }
+        
+        .editor-header {
+            padding: 15px;
+        }
+        
+        .editor-header h1 {
+            font-size: 1.3em;
+        }
+        
+        .section-card {
+            padding: 15px;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .project-editor-container {
+            max-width: 100%;
+        }
+        
+        .editor-header {
+            padding: 15px;
+        }
+        
+        .editor-header h1 {
+            font-size: 1.2em;
+        }
+        
+        .editor-header p {
+            font-size: 14px;
+        }
+        
+        .editor-header-actions {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .editor-header-actions a,
+        .editor-header-actions button {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .section-title-input {
+            width: 100%;
+            margin-right: 0;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .action-buttons .btn-small {
+            width: 100%;
+        }
+        
+        .content-editor {
+            min-height: 150px;
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+        
+        .refinement-section,
+        .feedback-panel {
+            flex-direction: column;
+        }
+        
+        .refinement-section > *,
+        .feedback-panel > * {
+            width: 100%;
+        }
+        
+        .like-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .btn-like,
+        .btn-dislike {
+            width: 100%;
+        }
+        
+        .add-section-container {
+            padding: 15px;
+        }
+        
+        .add-section-container > div {
+            flex-direction: column;
+        }
+        
+        .add-section-container input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .add-section-container button {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .editor-header h1 {
+            font-size: 1.1em;
+        }
+        
+        .section-card {
+            padding: 12px;
+        }
+        
+        .content-editor {
+            min-height: 120px;
+            padding: 10px;
+        }
+        
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+    }
+    
+    /* Landscape orientation for mobile */
+    @media (max-width: 767px) and (orientation: landscape) {
+        .content-editor {
+            min-height: 100px;
+        }
+        
+        .editor-header {
+            padding: 12px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="editor-header">
+    <h1 style="margin: 0; color: white;">{{ project.name }}</h1>
+    <p style="margin: 10px 0 0 0; opacity: 0.9;">
+        {{ 'Word Document' if project.project_type == 'word' else 'PowerPoint Presentation' }} • 
+        Topic: {{ project.main_topic }}
+    </p>
+    <div class="editor-header-actions" style="margin-top: 15px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+        <a href="{{ url_for('projects_list') }}" style="color: white; text-decoration: none;">← Back to Projects</a>
+        {% if not sections_with_feedback or sections_with_feedback|length == 0 %}
+        <button 
+            onclick="generateAllContent({{ project.id }})" 
+            id="generate-all-btn"
+            class="btn-generate"
+            style="padding: 12px 24px; font-size: 16px;"
+        >
+            🤖 Generate All Content
+        </button>
+        {% endif %}
+        <a href="{{ url_for('preview_project', project_id=project.id) }}" 
+           target="_blank"
+           style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 600; border: 2px solid white;">
+            👁️ Preview {{ 'Presentation' if project.project_type == 'powerpoint' else 'Document' }}
+        </a>
+        <a href="{{ url_for('download_project', project_id=project.id) }}" 
+           style="background: white; color: #FF6B35; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: 600; border: 2px solid #FF6B35;">
+            📥 Download {{ 'PPTX' if project.project_type == 'powerpoint' else 'DOCX' }}
+        </a>
+    </div>
+</div>
+
+<div id="sections-container">
+    {% if not sections_with_feedback %}
+    <div style="text-align: center; padding: 40px; background: #FAF8F3; border-radius: 10px; margin-bottom: 20px; border: 2px solid #E8DCC6;">
+        <p style="font-size: 18px; color: #2C2C2C; margin-bottom: 15px;">⚠️ No sections found in this project.</p>
+        <p style="color: #666; margin-bottom: 20px;">If you just created this project, sections should appear automatically.</p>
+        <button class="btn" onclick="window.location.reload()">🔄 Refresh Page</button>
+    </div>
+    {% endif %}
+    {% for item in sections_with_feedback %}
+    {% set section = item.section %}
+    {% set feedback = item.feedback %}
+    <div class="section-card" data-section-id="{{ section.id }}">
+        <div class="section-header">
+            <span class="section-number">{{ 'Section' if project.project_type == 'word' else 'Slide' }} {{ section.section_number }}</span>
+            <input 
+                type="text" 
+                class="section-title-input" 
+                value="{{ section.title }}"
+                data-section-id="{{ section.id }}"
+                onblur="updateSectionTitle({{ section.id }}, this.value)"
+            >
+        </div>
+        
+        <div class="action-buttons" style="margin-bottom: 15px;">
+            <button 
+                class="btn-small btn-generate" 
+                id="generate-btn-{{ section.id }}"
+                onclick="generateContent({{ section.id }})"
+            >
+                {% if not section.content or not section.content.strip() %}
+                🤖 Generate Content
+                {% else %}
+                🔄 Regenerate Content
+                {% endif %}
+            </button>
+            {% if section.content and section.content.strip() %}
+            <button 
+                class="btn-small btn-refine" 
+                onclick="toggleRefinement({{ section.id }})"
+            >
+                ✏️ Refine Content
+            </button>
+            {% endif %}
+        </div>
+        
+        <textarea 
+            class="content-editor" 
+            id="content-editor-{{ section.id }}"
+            data-section-id="{{ section.id }}"
+            placeholder="Content will appear here after generation. Click the 'Generate Content' button above to start."
+            onblur="updateSectionContent({{ section.id }}, this.value)"
+        >{{ section.content or '' }}</textarea>
+        {% if section.content and section.content.strip() %}
+        <div style="color: #FF6B35; font-size: 12px; margin-top: 5px;">
+            ✅ Content available ({{ section.content|length }} characters)
+        </div>
+        {% else %}
+        <div style="color: #2C2C2C; font-size: 12px; margin-top: 5px;">
+            ⚠️ No content yet - Click "🤖 Generate Content" button above to generate content for this section
+        </div>
+        {% endif %}
+        
+        <div class="refinement-panel" id="refinement-{{ section.id }}">
+            <input 
+                type="text" 
+                class="refinement-input" 
+                placeholder="Enter refinement request (e.g., 'Make this more formal', 'Convert to bullet points', 'Shorten to 100 words')"
+                id="refinement-prompt-{{ section.id }}"
+            >
+            <button class="btn-small btn-refine" onclick="refineContent({{ section.id }})">
+                Apply Refinement
+            </button>
+        </div>
+        
+        <div class="feedback-panel">
+            <div class="like-buttons">
+                <button 
+                    class="btn-like {% if feedback and feedback.like_status == 'like' %}active{% endif %}"
+                    onclick="setFeedback({{ section.id }}, 'like')"
+                >
+                    👍 Like
+                </button>
+                <button 
+                    class="btn-dislike {% if feedback and feedback.like_status == 'dislike' %}active{% endif %}"
+                    onclick="setFeedback({{ section.id }}, 'dislike')"
+                >
+                    👎 Dislike
+                </button>
+            </div>
+        </div>
+        
+        <!-- Comments Section -->
+        <div class="comments-section" id="comments-section-{{ section.id }}" style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #E8DCC6;">
+            <h4 style="margin-bottom: 10px; color: #2C2C2C; font-size: 14px; font-weight: 600;">💬 Comments</h4>
+            <div class="comments-list" id="comments-list-{{ section.id }}" style="margin-bottom: 10px; max-height: 200px; overflow-y: auto;">
+                <!-- Comments will be loaded here -->
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input 
+                    type="text" 
+                    class="comment-box" 
+                    id="comment-input-{{ section.id }}"
+                    placeholder="Add a comment..."
+                    onkeypress="if(event.key === 'Enter') addComment({{ section.id }})"
+                >
+                <button class="btn-small btn-refine" onclick="addComment({{ section.id }})" style="white-space: nowrap;">
+                    Add Comment
+                </button>
+            </div>
+        </div>
+        
+        <!-- Revision History Section -->
+        <div class="revision-history-section" id="revision-history-{{ section.id }}" style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #E8DCC6;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; color: #2C2C2C; font-size: 14px; font-weight: 600;">📜 Revision History</h4>
+                <button 
+                    class="btn-small" 
+                    onclick="toggleRevisionHistory({{ section.id }})"
+                    style="background: #E8DCC6; color: #2C2C2C; border: 2px solid #FF6B35; padding: 5px 10px; font-size: 12px;"
+                >
+                    <span id="revision-toggle-{{ section.id }}">Show</span> History
+                </button>
+            </div>
+            <div class="revision-list" id="revision-list-{{ section.id }}" style="display: none; max-height: 300px; overflow-y: auto;">
+                <!-- Revisions will be loaded here -->
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Load comments and revision history when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for item in sections_with_feedback %}
+        {% set section = item.section %}
+        loadComments({{ section.id }});
+        {% endfor %}
+    });
+</script>
+
+<div class="add-section-container" style="text-align: center; margin-top: 30px; padding: 20px; border-top: 2px solid #E8DCC6; background: #FAF8F3; border-radius: 10px;">
+    <h3 style="color: #2C2C2C; margin-bottom: 15px;">➕ Add New {{ 'Section' if project.project_type == 'word' else 'Slide' }}</h3>
+    
+    <div style="max-width: 500px; margin: 0 auto;">
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <input 
+                type="text" 
+                id="new-section-title" 
+                placeholder="Enter section name (e.g., 'Introduction to AI', 'Market Analysis')"
+                style="flex: 1; padding: 12px; border: 2px solid #E8DCC6; border-radius: 8px; font-size: 14px; background: white; color: #2C2C2C;"
+                onkeypress="if(event.key === 'Enter') addSectionWithAI()"
+            >
+            <button 
+                class="btn-generate" 
+                onclick="addSectionWithAI()"
+                id="add-section-ai-btn"
+                style="padding: 12px 24px; white-space: nowrap;"
+            >
+                🤖 Create with AI
+            </button>
+        </div>
+        <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+            💡 Gemini will generate content based on the section name you provide
+        </div>
+        <button 
+            class="btn-small" 
+            onclick="addNewSection()"
+            style="background: #E8DCC6; color: #2C2C2C; border: 2px solid #FF6B35; padding: 8px 16px; font-size: 13px;"
+        >
+            Or add empty section
+        </button>
+    </div>
+</div>
+
+<script>
+    function generateAllContent(projectId) {
+        const btn = document.getElementById('generate-all-btn');
+        if (!btn) return;
+        
+        if (!confirm('This will generate sections and content for the entire project based on the topic. This may take a few minutes. Continue?')) {
+            return;
+        }
+        
+        btn.disabled = true;
+        btn.textContent = '⏳ Generating... Please wait...';
+        btn.style.opacity = '0.7';
+        btn.style.cursor = 'not-allowed';
+        
+        showNotification('🚀 Starting content generation... This may take a few minutes.', 'info');
+        
+        fetch(`/api/generate-all-content/${projectId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(err => {
+                    throw new Error(err.error || `HTTP ${res.status}: ${res.statusText}`);
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log('Generate all response:', data);
+            if (data.success) {
+                showNotification(`✅ Success! Generated ${data.sections_created} sections with content.`, 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                throw new Error(data.error || 'Failed to generate content');
+            }
+        })
+        .catch(error => {
+            console.error('Error generating all content:', error);
+            showNotification('❌ Error: ' + error.message, 'error');
+            btn.disabled = false;
+            btn.textContent = '🤖 Generate All Content';
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        });
+    }
+    
+    function generateContent(sectionId) {
+        const card = document.querySelector(`[data-section-id="${sectionId}"]`);
+        const editor = card.querySelector('.content-editor');
+        const generateBtn = card.querySelector('.btn-generate');
+        const refineBtn = card.querySelector('.btn-refine');
+        
+        if (!card || !editor || !generateBtn) {
+            alert('Error: Could not find section elements. Please refresh the page.');
+            return;
+        }
+        
+        card.classList.add('loading');
+        generateBtn.disabled = true;
+        const originalText = generateBtn.textContent;
+        generateBtn.textContent = 'Generating...';
+        
+        console.log(`Generating content for section ${sectionId}...`);
+        
+        fetch(`/api/generate-content/${sectionId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => {
+            console.log('Response status:', res.status);
+            if (!res.ok) {
+                // Try to parse error response
+                return res.json().then(err => {
+                    const errorMsg = err.error || err.details || `HTTP ${res.status}: ${res.statusText}`;
+                    throw new Error(errorMsg);
+                }).catch(() => {
+                    // If JSON parsing fails, use status text
+                    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            if (data.success && data.content) {
+                editor.value = data.content;
+                editor.style.minHeight = '400px'; // Expand editor for longer content
+                
+                // Hide generate button, show refine button
+                if (generateBtn) generateBtn.style.display = 'none';
+                if (refineBtn) refineBtn.style.display = 'inline-block';
+                
+                // Update status indicator
+                const statusDiv = card.querySelector('[style*="color: #2C2C2C"]') || card.querySelector('[style*="color: #FF6B35"]');
+                if (statusDiv) {
+                    statusDiv.style.color = '#FF6B35';
+                    statusDiv.textContent = `✅ Content generated (${data.content.length} characters)`;
+                }
+                
+                showNotification('✅ Content generated successfully!', 'success');
+                console.log('Content generated:', data.content.substring(0, 100) + '...');
+                console.log('Content length:', data.content.length, 'characters');
+                
+                // Reload page after 1 second to show updated content
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                const errorMsg = data.error || data.details || 'Failed to generate content';
+                alert('❌ Error: ' + errorMsg);
+                console.error('Generation error:', data);
+                generateBtn.disabled = false;
+                generateBtn.textContent = originalText;
+            }
+        })
+        .catch(error => {
+            console.error('Error details:', error);
+            alert('❌ Error generating content: ' + error.message);
+            generateBtn.disabled = false;
+            generateBtn.textContent = originalText;
+        })
+        .finally(() => {
+            card.classList.remove('loading');
+        });
+    }
+    
+    function toggleRefinement(sectionId) {
+        const panel = document.getElementById(`refinement-${sectionId}`);
+        panel.classList.toggle('active');
+    }
+    
+    function refineContent(sectionId) {
+        const card = document.querySelector(`[data-section-id="${sectionId}"]`);
+        const editor = card.querySelector('.content-editor');
+        const promptInput = document.getElementById(`refinement-prompt-${sectionId}`);
+        const refineBtn = promptInput.nextElementSibling;
+        const prompt = promptInput.value.trim();
+        
+        if (!prompt) {
+            alert('Please enter a refinement request.');
+            return;
+        }
+        
+        // Show loading state
+        card.classList.add('loading');
+        refineBtn.disabled = true;
+        const originalBtnText = refineBtn.textContent;
+        refineBtn.textContent = '⏳ Refining...';
+        
+        // Call API with new format
+        fetch(`/api/refine-content/${sectionId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({prompt: prompt})
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(err => {
+                    throw new Error(err.error || 'Failed to refine content');
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.success) {
+                editor.value = data.section.current_content;
+                promptInput.value = '';
+                document.getElementById(`refinement-${sectionId}`).classList.remove('active');
+                
+                // Refresh revision history
+                loadRevisionHistory(sectionId);
+                
+                showNotification('✅ Content refined successfully!', 'success');
+            } else {
+                throw new Error(data.error || 'Failed to refine content');
+            }
+        })
+        .catch(error => {
+            showNotification('❌ Error: ' + error.message, 'error');
+            console.error('Refinement error:', error);
+        })
+        .finally(() => {
+            card.classList.remove('loading');
+            refineBtn.disabled = false;
+            refineBtn.textContent = originalBtnText;
+        });
+    }
+    
+    function updateSectionTitle(sectionId, title) {
+        fetch(`/api/update-section/${sectionId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({title: title})
+        })
+        .catch(error => console.error('Error updating title:', error));
+    }
+    
+    function updateSectionContent(sectionId, content) {
+        fetch(`/api/update-section/${sectionId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({content: content})
+        })
+        .catch(error => console.error('Error updating content:', error));
+    }
+    
+    function setFeedback(sectionId, status) {
+        const card = document.querySelector(`[data-section-id="${sectionId}"]`);
+        const likeBtn = card.querySelector('.btn-like');
+        const dislikeBtn = card.querySelector('.btn-dislike');
+        
+        // Toggle active state
+        if (status === 'like') {
+            if (likeBtn.classList.contains('active')) {
+                status = null; // Unset
+                likeBtn.classList.remove('active');
+            } else {
+                likeBtn.classList.add('active');
+                dislikeBtn.classList.remove('active');
+            }
+        } else {
+            if (dislikeBtn.classList.contains('active')) {
+                status = null; // Unset
+                dislikeBtn.classList.remove('active');
+            } else {
+                dislikeBtn.classList.add('active');
+                likeBtn.classList.remove('active');
+            }
+        }
+        
+        // Send feedback with new API format
+        const liked = status === 'like';
+        fetch(`/api/feedback/${sectionId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({liked: liked})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Show brief UI feedback
+                const btn = liked ? likeBtn : dislikeBtn;
+                const originalBg = btn.style.background;
+                btn.style.background = '#FF6B35';
+                setTimeout(() => {
+                    btn.style.background = originalBg;
+                }, 300);
+            }
+        })
+        .catch(error => console.error('Error saving feedback:', error));
+    }
+    
+    function addComment(sectionId) {
+        const commentInput = document.getElementById(`comment-input-${sectionId}`);
+        const text = commentInput.value.trim();
+        
+        if (!text) {
+            alert('Please enter a comment.');
+            return;
+        }
+        
+        fetch(`/api/sections/${sectionId}/comments`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({text: text})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                commentInput.value = '';
+                loadComments(sectionId);
+                showNotification('✅ Comment added!', 'success');
+            } else {
+                throw new Error(data.error || 'Failed to add comment');
+            }
+        })
+        .catch(error => {
+            showNotification('❌ Error: ' + error.message, 'error');
+            console.error('Error adding comment:', error);
+        });
+    }
+    
+    function loadComments(sectionId) {
+        fetch(`/api/sections/${sectionId}/comments`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const commentsList = document.getElementById(`comments-list-${sectionId}`);
+                if (data.comments.length === 0) {
+                    commentsList.innerHTML = '<p style="color: #666; font-size: 12px; font-style: italic;">No comments yet.</p>';
+                } else {
+                    commentsList.innerHTML = data.comments.map(comment => `
+                        <div style="background: #FAF8F3; padding: 8px; margin-bottom: 8px; border-radius: 5px; border-left: 3px solid #FF6B35;">
+                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">
+                                <strong>${comment.username || 'User'}</strong> • ${new Date(comment.created_at).toLocaleString()}
+                            </div>
+                            <div style="font-size: 13px; color: #2C2C2C;">${escapeHtml(comment.text)}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading comments:', error);
+        });
+    }
+    
+    function toggleRevisionHistory(sectionId) {
+        const revisionList = document.getElementById(`revision-list-${sectionId}`);
+        const toggle = document.getElementById(`revision-toggle-${sectionId}`);
+        
+        if (revisionList.style.display === 'none') {
+            revisionList.style.display = 'block';
+            toggle.textContent = 'Hide';
+            loadRevisionHistory(sectionId);
+        } else {
+            revisionList.style.display = 'none';
+            toggle.textContent = 'Show';
+        }
+    }
+    
+    function loadRevisionHistory(sectionId) {
+        fetch(`/api/sections/${sectionId}/revisions`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const revisionList = document.getElementById(`revision-list-${sectionId}`);
+                if (data.revisions.length === 0) {
+                    revisionList.innerHTML = '<p style="color: #666; font-size: 12px; font-style: italic;">No revisions yet.</p>';
+                } else {
+                    revisionList.innerHTML = data.revisions.map(rev => {
+                        const preview = rev.generated_content.substring(0, 150) + (rev.generated_content.length > 150 ? '...' : '');
+                        const date = new Date(rev.created_at).toLocaleString();
+                        return `
+                            <div style="background: #FAF8F3; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #E8DCC6;">
+                                <div style="font-size: 11px; color: #666; margin-bottom: 5px;">
+                                    ${date} • ${rev.prompt ? 'Prompt: ' + escapeHtml(rev.prompt) : 'Initial content'}
+                                </div>
+                                <div style="font-size: 12px; color: #2C2C2C; margin-bottom: 8px; font-style: italic;">
+                                    ${escapeHtml(preview)}
+                                </div>
+                                <button 
+                                    class="btn-small" 
+                                    onclick="restoreRevision(${sectionId}, ${rev.id})"
+                                    style="background: #FF6B35; color: white; padding: 5px 10px; font-size: 11px;"
+                                >
+                                    🔄 Restore
+                                </button>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading revision history:', error);
+        });
+    }
+    
+    function restoreRevision(sectionId, revisionId) {
+        if (!confirm('Restore this revision? This will replace the current content.')) {
+            return;
+        }
+        
+        fetch(`/api/sections/${sectionId}/revisions/${revisionId}/restore`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const editor = document.getElementById(`content-editor-${sectionId}`);
+                editor.value = data.section.current_content;
+                loadRevisionHistory(sectionId);
+                showNotification('✅ Revision restored!', 'success');
+            } else {
+                throw new Error(data.error || 'Failed to restore revision');
+            }
+        })
+        .catch(error => {
+            showNotification('❌ Error: ' + error.message, 'error');
+            console.error('Error restoring revision:', error);
+        });
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function addSectionWithAI() {
+        const titleInput = document.getElementById('new-section-title');
+        const title = titleInput.value.trim();
+        const btn = document.getElementById('add-section-ai-btn');
+        
+        if (!title) {
+            showNotification('❌ Please enter a section name', 'error');
+            titleInput.focus();
+            return;
+        }
+        
+        // Show loading state
+        btn.disabled = true;
+        const originalText = btn.textContent;
+        btn.textContent = '⏳ Generating...';
+        titleInput.disabled = true;
+        
+        showNotification('🤖 Generating content for "' + title + '"... This may take a moment.', 'info');
+        
+        fetch('/api/add-section-with-content', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                project_id: {{ project.id }},
+                title: title
+            })
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(err => {
+                    throw new Error(err.error || 'Failed to create section');
+                });
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.success) {
+                showNotification('✅ Section "' + title + '" created with AI-generated content!', 'success');
+                titleInput.value = '';
+                // Reload page to show new section
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                throw new Error(data.error || 'Failed to create section');
+            }
+        })
+        .catch(error => {
+            showNotification('❌ Error: ' + error.message, 'error');
+            console.error('Error adding section with AI:', error);
+            btn.disabled = false;
+            btn.textContent = originalText;
+            titleInput.disabled = false;
+        });
+    }
+    
+    function addNewSection() {
+        const title = prompt('Enter section/slide title (empty section, no AI content):');
+        if (!title) return;
+        
+        fetch('/api/add-section', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                project_id: {{ project.id }},
+                title: title
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('✅ Section "' + title + '" added!', 'success');
+                setTimeout(() => {
+                    location.reload(); // Reload to show new section
+                }, 1000);
+            } else {
+                throw new Error(data.error || 'Failed to add section');
+            }
+        })
+        .catch(error => {
+            showNotification('❌ Error: ' + error.message, 'error');
+            console.error('Error adding section:', error);
+        });
+    }
+    
+    function showNotification(message, type = 'info') {
+        // Enhanced notification with different types
+        const notification = document.createElement('div');
+        const bgColor = type === 'success' ? '#FF6B35' : type === 'error' ? '#2C2C2C' : '#E8DCC6';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: ${bgColor};
+            color: white;
+            border-radius: 5px;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: 600;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+</script>
+{% endblock %}
+

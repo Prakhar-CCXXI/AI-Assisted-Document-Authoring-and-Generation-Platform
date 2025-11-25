@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Create AI Project - Flask App{% endblock %}
+
+{% block container_class %}submit-form-container{% endblock %}
+
+{% block extra_css %}
+<style>
+    .submit-form-container {
+        max-width: 800px;
+    }
+    
+    .project-type-selector {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .project-type-option {
+        flex: 1;
+        padding: 20px;
+        border: 2px solid #E8DCC6;
+        border-radius: 10px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.3s ease;
+        background: #FAF8F3;
+    }
+    
+    .project-type-option:hover {
+        border-color: #FF6B35;
+        background: white;
+    }
+    
+    .project-type-option input[type="radio"] {
+        margin-right: 8px;
+    }
+    
+    .project-type-option.selected {
+        border-color: #FF6B35;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+    }
+    
+    .ai-suggest-btn {
+        background: #FF6B35;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+    
+    .ai-suggest-btn:hover {
+        background: #218838;
+    }
+    
+    .outline-preview {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .outline-item {
+        padding: 8px;
+        margin: 5px 0;
+        background: white;
+        border-radius: 5px;
+        border-left: 3px solid #FF6B35;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+        .submit-form-container {
+            max-width: 100%;
+        }
+        
+        .project-type-selector {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .project-type-option {
+            padding: 15px;
+        }
+        
+        input[type="text"],
+        textarea {
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .project-type-option {
+            padding: 12px;
+        }
+        
+        .outline-preview {
+            max-height: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>Create AI-Powered Project</h1>
+    
+    <form method="POST" action="{{ url_for('create_project') }}" id="projectForm">
+        <div class="form-group">
+            <label for="name">Project Name</label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                required 
+                autofocus
+                placeholder="e.g., Marketing Strategy Document"
+            >
+        </div>
+        
+        <div class="form-group">
+            <label>Project Type</label>
+            <div class="project-type-selector">
+                <label class="project-type-option" onclick="selectType('word')">
+                    <input type="radio" name="project_type" value="word" checked>
+                    📄 Word Document
+                </label>
+                <label class="project-type-option" onclick="selectType('powerpoint')">
+                    <input type="radio" name="project_type" value="powerpoint">
+                    📊 PowerPoint Presentation
+                </label>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="main_topic">Main Topic</label>
+            <textarea 
+                id="main_topic" 
+                name="main_topic" 
+                required
+                placeholder="Describe the main topic or theme of your project. The AI will generate all content related to this topic..."
+                rows="4"
+            ></textarea>
+            <small style="color: #666; display: block; margin-top: 5px;">
+                💡 After creating the project, click "Generate Content" to automatically create sections and generate all content.
+            </small>
+        </div>
+        
+        <button type="submit" class="btn">Create Project</button>
+    </form>
+    
+    <div class="link" style="margin-top: 20px;">
+        <a href="{{ url_for('projects_list') }}">← Back to Projects</a>
+    </div>
+    
+    <script>
+        function selectType(type) {
+            document.querySelectorAll('.project-type-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: {{ project.name }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .preview-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+        
+        .preview-header {
+            background: #FF6B35; /* Vibrant orange */
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .preview-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .preview-header .meta {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .preview-actions {
+            background: #FAF8F3; /* Cream background */
+            padding: 15px 30px;
+            border-bottom: 2px solid #E8DCC6; /* Beige border */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .preview-actions a {
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-back {
+            background: #E8DCC6; /* Beige */
+            color: #2C2C2C; /* Dark gray text */
+            border: 2px solid #FF6B35;
+        }
+        
+        .btn-back:hover {
+            background: #FF6B35; /* Orange on hover */
+            color: white;
+        }
+        
+        .btn-download {
+            background: #FF6B35; /* Orange */
+            color: white;
+        }
+        
+        .btn-download:hover {
+            background: #ff7d4d; /* Lighter orange on hover */
+        }
+        
+        .document-content {
+            padding: 50px;
+            min-height: 500px;
+        }
+        
+        .document-content h2 {
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #FF6B35; /* Orange border */
+            padding-bottom: 10px;
+            page-break-before: always;
+        }
+        
+        .document-content h2:first-of-type {
+            page-break-before: auto;
+            margin-top: 0;
+        }
+        
+        .document-content p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #444;
+            text-align: justify;
+            line-height: 1.8;
+        }
+        
+        .document-content .empty-content {
+            color: #999;
+            font-style: italic;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .content-paragraph {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .page-break {
+            page-break-after: always;
+            border-top: 2px dashed #ddd;
+            margin: 40px 0;
+            padding-top: 40px;
+        }
+        
+        /* PowerPoint-style preview */
+        .slide-preview {
+            background: #f8f9fa;
+            border: 2px solid #E8DCC6;
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 30px;
+            min-height: 400px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .slide-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #FF6B35;
+            border-bottom: 3px solid #FF6B35;
+            padding-bottom: 15px;
+        }
+        
+        .slide-content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        .slide-bullet {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .slide-bullet:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #FF6B35;
+            font-size: 24px;
+            line-height: 1;
+        }
+        
+        .slide-break {
+            border-top: 3px solid #ddd;
+            margin: 40px 0;
+            padding-top: 40px;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .preview-actions {
+                display: none;
+            }
+            
+            .preview-header {
+                page-break-after: always;
+            }
+            
+            .document-content h2 {
+                page-break-before: always;
+            }
+            
+            .document-content h2:first-of-type {
+                page-break-before: auto;
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .preview-container {
+                max-width: 100%;
+            }
+            
+            .document-content {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            body {
+                padding: 10px;
+            }
+            
+            .preview-container {
+                max-width: 100%;
+            }
+            
+            .preview-header {
+                padding: 20px;
+            }
+            
+            .preview-header h1 {
+                font-size: 1.5em;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .preview-actions a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+            }
+            
+            .document-content {
+                padding: 20px;
+            }
+            
+            .document-content h2 {
+                font-size: 1.3em;
+                margin-top: 30px;
+            }
+            
+            .document-content p {
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .preview-header {
+                padding: 15px;
+            }
+            
+            .preview-header h1 {
+                font-size: 1.3em;
+            }
+            
+            .preview-header .meta {
+                font-size: 12px;
+            }
+            
+            .document-content {
+                padding: 15px;
+            }
+            
+            .document-content h2 {
+                font-size: 1.2em;
+                margin-top: 20px;
+            }
+            
+            .document-content p {
+                font-size: 14px;
+            }
+        }
+        
+        /* Legacy media query for compatibility */
+        /* Legacy media query - keeping for compatibility */
+        @media (max-width: 768px) {
+            .document-content {
+                padding: 30px 20px;
+            }
+            
+            .preview-header h1 {
+                font-size: 24px;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .preview-actions a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="preview-header">
+            <h1>{{ project.name }}</h1>
+            <div class="meta">
+                <div><strong>Topic:</strong> {{ project.main_topic }}</div>
+                <div style="margin-top: 5px;"><strong>Type:</strong> {{ 'PowerPoint Presentation' if project.project_type == 'powerpoint' else 'Word Document' }}</div>
+                <div style="margin-top: 5px;"><strong>Generated:</strong> {{ datetime.now().strftime("%B %d, %Y at %I:%M %p") }}</div>
+            </div>
+        </div>
+        
+        <div class="preview-actions">
+            <a href="{{ url_for('project_editor', project_id=project.id) }}" class="btn-back">← Back to Editor</a>
+            <a href="{{ url_for('download_project', project_id=project.id) }}" class="btn-download">
+                📥 Download as {{ 'PPTX' if project.project_type == 'powerpoint' else 'DOCX' }}
+            </a>
+        </div>
+        
+        <div class="document-content">
+            {% if not sections %}
+                <div class="empty-content">
+                    <p>No {{ 'slides' if project.project_type == 'powerpoint' else 'sections' }} available in this project yet.</p>
+                    <p>Go back to the editor to add {{ 'slides' if project.project_type == 'powerpoint' else 'sections' }} and generate content.</p>
+                </div>
+            {% else %}
+                {% if project.project_type == 'powerpoint' %}
+                    {# PowerPoint-style preview - slide-based layout #}
+                    {% for section in sections %}
+                        <div class="slide-preview">
+                            <h2 class="slide-title">{{ section.section_number }}. {{ section.title }}</h2>
+                            
+                            {% if section.content and section.content.strip() %}
+                                <div class="slide-content">
+                                    {% for paragraph in section.content.split('\n\n') %}
+                                        {% if paragraph.strip() %}
+                                            <p class="slide-bullet">{{ paragraph.strip() }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="empty-content">
+                                    <p>(Content not generated yet)</p>
+                                    <p style="margin-top: 10px; font-size: 14px;">Click "Generate Content" in the editor to create content for this slide.</p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if not loop.last %}
+                                <div class="slide-break"></div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {# Word document-style preview #}
+                    {% for section in sections %}
+                        <h2>{{ section.section_number }}. {{ section.title }}</h2>
+                        
+                        {% if section.content and section.content.strip() %}
+                            <div class="content-paragraph">
+                                {% for paragraph in section.content.split('\n\n') %}
+                                    {% if paragraph.strip() %}
+                                        <p>{{ paragraph.strip() }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-content">
+                                <p>(Content not generated yet)</p>
+                                <p style="margin-top: 10px; font-size: 14px;">Click "Generate Content" in the editor to create content for this section.</p>
+                            </div>
+                        {% endif %}
+                        
+                        {% if not loop.last %}
+                            <div class="page-break"></div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="footer">
+            <p>{{ 'Presentation' if project.project_type == 'powerpoint' else 'Document' }} Preview • {{ project.name }} • Generated on {{ datetime.now().strftime("%B %d, %Y") }}</p>
+            <p style="margin-top: 5px; font-size: 11px;">This is a preview. Use the download button to get the actual {{ 'PPTX' if project.project_type == 'powerpoint' else 'DOCX' }} file.</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+

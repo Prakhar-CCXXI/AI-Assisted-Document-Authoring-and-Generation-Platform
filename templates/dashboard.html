@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Flask Auth App{% endblock %}
+
+{% block container_class %}dashboard-container{% endblock %}
+
+{% block content %}
+<div class="welcome-box">
+    <h1>Welcome, {{ username }}!</h1>
+    <p>You have successfully logged in to your account.</p>
+</div>
+
+<div class="dashboard-actions" style="text-align: center; margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+    <a href="{{ url_for('submit_form') }}" class="logout-btn">Submit Content</a>
+    <a href="{{ url_for('projects_list') }}" class="logout-btn">AI Projects</a>
+    <a href="{{ url_for('view_data') }}" class="logout-btn">View Data</a>
+    <a href="{{ url_for('logout') }}" class="logout-btn" style="background: #2C2C2C; color: white; border: 2px solid #FF6B35;">Logout</a>
+</div>
+{% endblock %}
+

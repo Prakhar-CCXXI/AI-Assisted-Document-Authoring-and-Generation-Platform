@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}View Stored Data - Flask App{% endblock %}
+
+{% block container_class %}dashboard-container{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Responsive table styles */
+    @media (max-width: 767px) {
+        .data-container {
+            padding: 0;
+        }
+        
+        .action-buttons-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-buttons-container .logout-btn {
+            width: 100%;
+            margin: 0;
+            display: block;
+        }
+        
+        table {
+            font-size: 12px;
+        }
+        
+        table th,
+        table td {
+            padding: 8px !important;
+        }
+        
+        .download-buttons {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .download-buttons button {
+            width: 100%;
+            font-size: 12px;
+            padding: 6px 10px !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        table {
+            font-size: 11px;
+        }
+        
+        table th,
+        table td {
+            padding: 6px !important;
+        }
+        
+        h1 {
+            font-size: 1.2em !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+    <h1 style="text-align: center; color: #2C2C2C; margin-bottom: 30px;">Stored Information</h1>
+    
+    <div class="action-buttons-container" style="text-align: center; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <a href="{{ url_for('submit_form') }}" class="logout-btn" style="display: inline-block;">
+            ← Add New Entry
+        </a>
+        <a href="{{ url_for('download_docx') }}" class="logout-btn" style="display: inline-block; background: #FF6B35; color: white;">
+            📥 Download All Entries as DOCX
+        </a>
+    </div>
+    
+    {% if contents %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(44,44,44,0.1); border: 2px solid #E8DCC6;">
+                <thead>
+                    <tr style="background: #FF6B35; color: white;">
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #ddd;">Content #</th>
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #ddd;">Username</th>
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #ddd;">Content Entered</th>
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #ddd;">Created At</th>
+                        <th style="padding: 15px; text-align: left; border-bottom: 2px solid #ddd;">Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for content in contents %}
+                    <tr style="border-bottom: 1px solid #E8DCC6;">
+                        <td style="padding: 15px; font-weight: 600; color: #FF6B35;">{{ content.content_number }}</td>
+                        <td style="padding: 15px;">{{ content.username }}</td>
+                        <td style="padding: 15px; max-width: 400px; word-wrap: break-word;">
+                            {{ content.content_entered[:100] }}{% if content.content_entered|length > 100 %}...{% endif %}
+                        </td>
+                        <td style="padding: 15px; color: #666; font-size: 14px;">
+                            {{ content.created_at.strftime('%Y-%m-%d %H:%M') if content.created_at else 'N/A' }}
+                        </td>
+                        <td style="padding: 15px;">
+                            <div class="download-buttons" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button 
+                                    onclick="downloadContentDocx({{ content.content_number }})" 
+                                    class="download-btn"
+                                    style="background: #FF6B35; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: all 0.2s ease;"
+                                    title="Download as DOCX"
+                                    onmouseover="this.style.background='#ff7d4d'"
+                                    onmouseout="this.style.background='#FF6B35'"
+                                >
+                                    📄 DOCX
+                                </button>
+                                <button 
+                                    onclick="downloadContent({{ content.content_number }}, '{{ content.content_entered|replace("'", "\\'")|replace('"', '\\"') }}')" 
+                                    class="download-btn"
+                                    style="background: #E8DCC6; color: #2C2C2C; border: 2px solid #FF6B35; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: all 0.2s ease;"
+                                    title="Download as TXT"
+                                    onmouseover="this.style.background='#FF6B35'; this.style.color='white'"
+                                    onmouseout="this.style.background='#E8DCC6'; this.style.color='#2C2C2C'"
+                                >
+                                    📝 TXT
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; color: #666;">
+            Total entries: {{ contents|length }}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background: #FAF8F3; border-radius: 10px; color: #2C2C2C; border: 2px solid #E8DCC6;">
+            <p style="font-size: 18px; margin-bottom: 20px;">No data stored yet.</p>
+            <a href="{{ url_for('submit_form') }}" class="btn" style="display: inline-block;">
+                Add Your First Entry
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Function to download individual content as text file
+    function downloadContent(contentNumber, contentText) {
+        const formData = new FormData();
+        formData.append('content', contentText);
+        
+        fetch('/download-text', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.blob())
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `content_${contentNumber}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error downloading file:', error);
+            alert('Error downloading file. Please try again.');
+        });
+    }
+    
+    // Alternative: Download specific content via GET route
+    function downloadContentDirect(contentNumber) {
+        window.location.href = `/download-content/${contentNumber}`;
+    }
+    
+    // Function to download individual content as DOCX file
+    function downloadContentDocx(contentNumber) {
+        window.location.href = `/download-content-docx/${contentNumber}`;
+    }
+</script>
+{% endblock %}
+
+

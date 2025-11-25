@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}Upload - Flask Auth App{% endblock %}
+
+{% block container_class %}upload-page{% endblock %}
+
+{% block extra_css %}
+<style>
+    .upload-page {
+        max-width: 900px;
+    }
+
+    /* Dialog/Modal Styles */
+    .dialog-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .dialog-overlay.active {
+        display: flex;
+    }
+
+    .dialog-box {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+        position: relative;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .dialog-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .dialog-header h2 {
+        color: #333;
+        margin: 0;
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #999;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+    }
+
+    .close-btn:hover {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .dialog-content {
+        margin-bottom: 25px;
+    }
+
+    .form-section {
+        margin-bottom: 25px;
+    }
+
+    .form-section h3 {
+        color: #555;
+        margin-bottom: 15px;
+        font-size: 1.1em;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 150px;
+        transition: all 0.3s ease;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #FF6B35; /* Orange focus */
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+    }
+
+    .dialog-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+    }
+
+    .btn-secondary {
+        background: #E8DCC6; /* Beige */
+        color: #2C2C2C; /* Dark gray text */
+        padding: 12px 25px;
+        border: 2px solid #FF6B35;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+        background: #FF6B35; /* Orange on hover */
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: #FF6B35; /* Orange */
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Dialog Box -->
+<div class="dialog-overlay active" id="dialogOverlay" onclick="closeDialogOnOverlay(event)">
+    <div class="dialog-box" onclick="event.stopPropagation()">
+        <div class="dialog-header">
+            <h2>Hello {{ username }}, What you have today?</h2>
+            <button class="close-btn" onclick="closeDialog()">&times;</button>
+        </div>
+        
+        <div class="dialog-content">
+            <form id="uploadForm" onsubmit="handleSubmit(event)">
+                <div class="form-section">
+                    <textarea 
+                        id="textInput" 
+                        name="text_content" 
+                        placeholder="Paste your text here..."
+                    ></textarea>
+                </div>
+                
+                <div class="dialog-actions">
+                    <button type="button" class="btn-secondary" onclick="closeDialog()">Cancel</button>
+                    <button type="submit" class="btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set body overflow on page load since dialog is already active
+    window.addEventListener('DOMContentLoaded', function() {
+        document.body.style.overflow = 'hidden';
+    });
+
+    function closeDialog() {
+        document.getElementById('dialogOverlay').classList.remove('active');
+        document.body.style.overflow = 'auto';
+        // Reset form
+        document.getElementById('uploadForm').reset();
+        // Redirect to dashboard when dialog is closed
+        window.location.href = "{{ url_for('dashboard') }}";
+    }
+
+    function closeDialogOnOverlay(event) {
+        if (event.target.id === 'dialogOverlay') {
+            closeDialog();
+        }
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        
+        const textContent = document.getElementById('textInput').value.trim();
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        
+        if (!textContent) {
+            alert('Please paste some text.');
+            return;
+        }
+        
+        // Disable submit button to prevent double submission
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+        
+        // Send data to backend
+        fetch('/submit-content', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text_content: textContent
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Content saved successfully! Content ID: ' + data.content_id);
+                closeDialog();
+            } else {
+                alert('Error: ' + data.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while saving content. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit';
+        });
+    }
+
+    // Close dialog on Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeDialog();
+        }
+    });
+</script>
+{% endblock %}
+
