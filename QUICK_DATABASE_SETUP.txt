@@ -1,0 +1,79 @@
+================================================================================
+QUICK DATABASE SETUP - COPY & PASTE COMMANDS
+================================================================================
+
+YOUR DATABASE INFO:
+-------------------
+Username: postgres
+Password: PostgreSQL1036
+Host: localhost
+Port: 5432
+Database: docxbuilder (needs to be created)
+
+================================================================================
+STEP 1: CREATE DATABASE
+================================================================================
+
+Open Command Prompt/PowerShell and run:
+
+psql -U postgres
+
+Enter password: PostgreSQL1036
+
+Then run:
+CREATE DATABASE docxbuilder;
+
+Exit:
+\q
+
+================================================================================
+STEP 2: SET ENVIRONMENT VARIABLE
+================================================================================
+
+WINDOWS POWERSHELL:
+------------------
+$env:DATABASE_URL="postgresql+psycopg://postgres:PostgreSQL1036@localhost:5432/docxbuilder"
+
+WINDOWS COMMAND PROMPT:
+----------------------
+set DATABASE_URL=postgresql+psycopg://postgres:PostgreSQL1036@localhost:5432/docxbuilder
+
+MAC/LINUX:
+----------
+export DATABASE_URL="postgresql+psycopg://postgres:PostgreSQL1036@localhost:5432/docxbuilder"
+
+================================================================================
+STEP 3: INITIALIZE DATABASE TABLES
+================================================================================
+
+python init_db.py
+
+Expected output:
+✅ Database tables created successfully!
+
+================================================================================
+STEP 4: RUN THE APP
+================================================================================
+
+python app.py
+
+Open browser: http://localhost:5000
+
+================================================================================
+ALTERNATIVE: CREATE .env FILE
+================================================================================
+
+Create a file named .env in your project folder with:
+
+DATABASE_URL=postgresql+psycopg://postgres:PostgreSQL1036@localhost:5432/docxbuilder
+
+The app will automatically read it!
+
+================================================================================
+YOUR CONNECTION STRING:
+================================================================================
+
+postgresql+psycopg://postgres:PostgreSQL1036@localhost:5432/docxbuilder
+
+================================================================================
+
