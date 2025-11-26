@@ -1,0 +1,44 @@
+EXACT FILES TO UPLOAD TO VERCEL
+================================
+
+IMPORTANT: Vercel doesn't use manual uploads. Push these files to GitHub/GitLab/Bitbucket, then connect the repository to Vercel.
+
+REQUIRED FILES (Must be in your repository):
+============================================
+
+Core Application:
+----------------
+app.py
+ai_service.py
+requirements.txt
+init_db.py
+
+Vercel Configuration:
+---------------------
+vercel.json
+api/index.py
+runtime.txt
+.vercelignore
+
+Templates (all files in templates/ folder):
+-------------------------------------------
+templates/base.html
+templates/login.html
+templates/register.html
+templates/dashboard.html
+templates/submit_form.html
+templates/view_data.html
+templates/create_project.html
+templates/projects_list.html
+templates/project_editor.html
+templates/project_preview.html
+templates/upload.html
+
+Optional Documentation:
+-----------------------
+README.md
+VERCEL_DEPLOYMENT.md
+QUICK_DEPLOY.md
+
+TOTAL: 19 required files + documentation files
+

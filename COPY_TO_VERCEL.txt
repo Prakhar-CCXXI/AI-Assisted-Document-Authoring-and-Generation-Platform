@@ -1,0 +1,71 @@
+==========================================
+COPY THESE VALUES TO VERCEL DASHBOARD
+==========================================
+
+Go to: Vercel Dashboard → Your Project → Settings → Environment Variables
+
+==========================================
+VARIABLE 1: GEMINI_API_KEY
+==========================================
+
+Name: GEMINI_API_KEY
+Value: AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+
+Environments: ✅ Production, ✅ Preview, ✅ Development
+
+==========================================
+VARIABLE 2: SECRET_KEY
+==========================================
+
+Name: SECRET_KEY
+Value: 310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
+
+Environments: ✅ Production, ✅ Preview, ✅ Development
+
+==========================================
+VARIABLE 3: DATABASE_URL
+==========================================
+
+⚠️  IMPORTANT: Your current database URL uses localhost which WON'T WORK on Vercel!
+
+Your current URL (won't work):
+postgresql://your_username:PostgreSQL1036@localhost:5432/docxbuilder
+
+You MUST set up a cloud PostgreSQL database first!
+
+OPTIONS:
+1. Vercel Postgres (Easiest):
+   - Vercel Dashboard → Storage → Create Database → Postgres
+   - Copy the connection string
+   - Change postgresql:// to postgresql+psycopg://
+
+2. Supabase (Free):
+   - supabase.com → Create Project
+   - Settings → Database → Connection string
+   - Change postgresql:// to postgresql+psycopg://
+
+3. Neon (Free):
+   - neon.tech → Create Project
+   - Connection Details → Copy string
+   - Change postgresql:// to postgresql+psycopg://
+   - Add ?sslmode=require at the end
+
+Format needed:
+postgresql+psycopg://username:password@host:port/database_name?sslmode=require
+
+Name: DATABASE_URL
+Value: [Your cloud database connection string - get from provider above]
+Environments: ✅ Production, ✅ Preview, ✅ Development
+
+==========================================
+QUICK STEPS:
+==========================================
+
+1. Set up cloud PostgreSQL database (Vercel Postgres recommended)
+2. Get connection string
+3. Change postgresql:// to postgresql+psycopg://
+4. Add all 3 variables in Vercel
+5. Deploy!
+
+==========================================
+

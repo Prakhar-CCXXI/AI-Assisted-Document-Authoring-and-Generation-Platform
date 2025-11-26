@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Database
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Documentation
+*.md
+!README.md
+
+# Logs
+*.log
+
+# Migration scripts (not needed in production)
+migrate_*.py
+clear_database.py
+delete_ai_projects.py
+verify_section_content.py
+

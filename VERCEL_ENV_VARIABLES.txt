@@ -1,0 +1,71 @@
+==========================================
+VERCEL ENVIRONMENT VARIABLES - COPY & PASTE
+==========================================
+
+IMPORTANT: Your database URL uses localhost which WON'T WORK on Vercel.
+You need to set up a cloud PostgreSQL database first.
+
+==========================================
+VARIABLE 1: DATABASE_URL
+==========================================
+
+⚠️  CRITICAL: Your current database URL won't work on Vercel!
+
+Your current URL (for localhost - won't work):
+postgresql://your_username:PostgreSQL1036@localhost:5432/docxbuilder
+
+You need to:
+1. Create a cloud PostgreSQL database (Vercel Postgres, Supabase, Neon, or Railway)
+2. Get the connection string from your provider
+3. Change postgresql:// to postgresql+psycopg://
+4. Use that URL instead
+
+Example format (replace with your actual cloud database):
+postgresql+psycopg://username:password@host:port/database_name?sslmode=require
+
+HOW TO GET CLOUD DATABASE:
+- Vercel Postgres: Vercel Dashboard → Storage → Create Database → Postgres
+- Supabase: supabase.com → Create Project → Settings → Database
+- Neon: neon.tech → Create Project → Connection Details
+- Railway: railway.app → Create Project → Add PostgreSQL
+
+==========================================
+VARIABLE 2: GEMINI_API_KEY
+==========================================
+
+Name: GEMINI_API_KEY
+Value: AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+
+==========================================
+VARIABLE 3: SECRET_KEY
+==========================================
+
+Name: SECRET_KEY
+Value: 310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
+
+==========================================
+HOW TO ADD IN VERCEL:
+==========================================
+
+1. Go to: https://vercel.com/dashboard
+2. Click your project
+3. Click "Settings" tab
+4. Click "Environment Variables" (left sidebar)
+5. For each variable:
+   - Click "Add New"
+   - Enter Name (exactly as shown)
+   - Enter Value (copy from above)
+   - Check: ✅ Production, ✅ Preview, ✅ Development
+   - Click "Save"
+
+==========================================
+NEXT STEPS:
+==========================================
+
+1. Set up cloud PostgreSQL database
+2. Get the connection string
+3. Add all 3 variables in Vercel
+4. Deploy your project
+
+==========================================
+

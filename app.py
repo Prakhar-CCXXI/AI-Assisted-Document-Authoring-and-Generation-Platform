@@ -15,7 +15,8 @@ from ai_service import generate_content_section, refine_content_section, generat
 import time
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24).hex()
+# Use environment variable for SECRET_KEY in production, or generate one for development
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', os.urandom(24).hex())
 
 # PostgreSQL Database Configuration
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -184,9 +185,15 @@ def check_rate_limit(user_id, max_calls=10, window_seconds=60):
     llm_rate_limit[user_id].append(now)
     return True
 
-# Create tables
-with app.app_context():
-    db.create_all()
+# Create tables (only if they don't exist)
+# In production, tables should be created via migrations or init script
+try:
+    with app.app_context():
+        db.create_all()
+except Exception as e:
+    # Log error but don't fail app startup (tables might already exist or DB might not be ready)
+    print(f"Note: Could not create tables on startup: {e}")
+    print("This is normal if tables already exist or database is not yet configured.")
 
 
 # Authentication Decorator
