@@ -9,7 +9,7 @@ VARIABLE 1: GEMINI_API_KEY
 ==========================================
 
 Name: GEMINI_API_KEY
-Value: AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+Value: AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 
 Environments: ✅ Production, ✅ Preview, ✅ Development
 

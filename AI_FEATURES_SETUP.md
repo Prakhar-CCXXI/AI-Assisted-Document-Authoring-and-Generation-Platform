@@ -39,7 +39,7 @@ This will install:
 
 **Your API key is already configured in the code!**
 
-The API key `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk` is set as default in `ai_service.py`.
+The API key `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0` is set as default in `ai_service.py`.
 
 **Option 1: Use Default (Already Set)**
 The API key is already configured in the code, so it should work immediately.
@@ -47,19 +47,19 @@ The API key is already configured in the code, so it should work immediately.
 **Option 2: Environment Variable (Recommended for Production)**
 ```bash
 # Windows PowerShell
-$env:GEMINI_API_KEY="AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk"
+$env:GEMINI_API_KEY="AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0"
 
 # Windows Command Prompt
-set GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+set GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 
 # Linux/Mac
-export GEMINI_API_KEY="AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk"
+export GEMINI_API_KEY="AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0"
 ```
 
 **Option 3: Create .env file**
 Create a `.env` file in the project root:
 ```
-GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 
 **Get a new API key (if needed):**

@@ -6,7 +6,7 @@ Create a file named `.env` in your project root with this exact content:
 
 ```
 DATABASE_URL=postgresql+psycopg://your_username:PostgreSQL1036@localhost:5432/docxbuilder
-GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 ```
 
@@ -24,7 +24,7 @@ SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 ```powershell
 @"
 DATABASE_URL=postgresql+psycopg://your_username:PostgreSQL1036@localhost:5432/docxbuilder
-GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 "@ | Out-File -FilePath .env -Encoding utf8
 ```
@@ -33,7 +33,7 @@ SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 ```bash
 cat > .env << 'EOF'
 DATABASE_URL=postgresql+psycopg://your_username:PostgreSQL1036@localhost:5432/docxbuilder
-GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 EOF
 ```
@@ -52,7 +52,7 @@ EOF
 
 ```
 DATABASE_URL=postgresql+psycopg://your_username:PostgreSQL1036@localhost:5432/docxbuilder
-GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 ```
 

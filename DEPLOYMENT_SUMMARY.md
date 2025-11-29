@@ -90,7 +90,7 @@ AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 **Example**:
 ```
-AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 
 **In Vercel**:

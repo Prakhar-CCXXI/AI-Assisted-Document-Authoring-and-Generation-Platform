@@ -106,7 +106,7 @@ Google Gemini API key for AI content generation features.
 ### Format
 - Starts with: `AIzaSy`
 - Length: Usually 39 characters
-- Example: `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+- Example: `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 
 ### How to Add in Vercel
 1. Go to Project → **Settings** → **Environment Variables**
@@ -203,7 +203,7 @@ secrets.token_hex(32)
 | Variable | Format | Example | Where to Get |
 |----------|--------|---------|--------------|
 | `DATABASE_URL` | `postgresql+psycopg://user:pass@host:port/db` | `postgresql+psycopg://postgres:pass@host:5432/db` | Database provider dashboard |
-| `GEMINI_API_KEY` | `AIzaSy...` (39 chars) | `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk` | [Google AI Studio](https://makersuite.google.com/app/apikey) |
+| `GEMINI_API_KEY` | `AIzaSy...` (39 chars) | `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0` | [Google AI Studio](https://makersuite.google.com/app/apikey) |
 | `SECRET_KEY` | 64 hex characters | `a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456` | Generate with Python command |
 
 ---

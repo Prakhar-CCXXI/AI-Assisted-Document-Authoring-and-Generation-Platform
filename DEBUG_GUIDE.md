@@ -15,7 +15,7 @@ python test_ai_generation.py
 
 **If it fails:**
 - Check your `GEMINI_API_KEY` environment variable
-- Verify API key is correct: `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+- Verify API key is correct: `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 - Check internet connection
 
 ### Step 2: Test AI Endpoint (Flask must be running)
@@ -72,10 +72,10 @@ python verify_section_content.py
 **Fix:**
 ```powershell
 # PowerShell
-$env:GEMINI_API_KEY='AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk'
+$env:GEMINI_API_KEY='AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0'
 
 # Or create .env file in project root:
-# GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+# GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 
 ### Issue 2: "No working Gemini model found"

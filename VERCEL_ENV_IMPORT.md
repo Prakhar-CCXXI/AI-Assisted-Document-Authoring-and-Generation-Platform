@@ -14,7 +14,7 @@ The `.env` file has been created with:
 
 ```
 DATABASE_URL=postgresql+psycopg://your_username:PostgreSQL1036@localhost:5432/docxbuilder
-GEMINI_API_KEY=AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+GEMINI_API_KEY=AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 ```
 
@@ -44,7 +44,7 @@ SECRET_KEY=310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b
 #### Variable 2: GEMINI_API_KEY
 1. Click **Add New**
 2. **Name:** `GEMINI_API_KEY`
-3. **Value:** `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+3. **Value:** `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 4. Check: ✅ Production, ✅ Preview, ✅ Development
 5. Click **Save**
 
@@ -92,7 +92,7 @@ postgresql+psycopg://your_username:PostgreSQL1036@localhost:5432/docxbuilder
 
 **GEMINI_API_KEY:**
 ```
-AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 
 **SECRET_KEY:**

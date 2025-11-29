@@ -6,7 +6,7 @@
 
 **In Vercel Dashboard:**
 - **Name:** `GEMINI_API_KEY`
-- **Value:** `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+- **Value:** `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 - **Environments:** ✅ Production, ✅ Preview, ✅ Development
 
 ---
@@ -106,7 +106,7 @@ postgresql+psycopg://username:password@ep-xxx.us-east-1.aws.neon.tech/neondb?ssl
 - [ ] Cloud PostgreSQL database created
 - [ ] Database connection string obtained
 - [ ] Connection string changed to `postgresql+psycopg://` format
-- [ ] `GEMINI_API_KEY` added: `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+- [ ] `GEMINI_API_KEY` added: `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 - [ ] `SECRET_KEY` added: `310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b`
 - [ ] `DATABASE_URL` added (with cloud database connection string)
 - [ ] All variables enabled for Production, Preview, Development
@@ -117,7 +117,7 @@ postgresql+psycopg://username:password@ep-xxx.us-east-1.aws.neon.tech/neondb?ssl
 ## 🎯 Summary
 
 **Ready to add now:**
-- ✅ `GEMINI_API_KEY` = `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+- ✅ `GEMINI_API_KEY` = `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 - ✅ `SECRET_KEY` = `310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b`
 
 **Action needed:**

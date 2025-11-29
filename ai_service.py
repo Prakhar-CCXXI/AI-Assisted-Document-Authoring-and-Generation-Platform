@@ -15,7 +15,8 @@ except ImportError:
     pass  # python-dotenv not installed, use environment variables only
 
 # Initialize Gemini client
-api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk')
+# AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
+api_key = os.getenv('GEMINI_API_KEY', 'AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0')
 if not api_key:
     print("⚠️  WARNING: GEMINI_API_KEY not set. AI features will not work.")
     print("   Set it using: $env:GEMINI_API_KEY='your-key-here' (PowerShell)")

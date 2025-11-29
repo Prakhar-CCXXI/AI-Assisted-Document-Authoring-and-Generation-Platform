@@ -153,13 +153,13 @@ postgresql+psycopg://postgres:password@containers-us-west-xxx.railway.app:5432/r
 
 **Value Format**:
 ```
-AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 (Replace with your actual API key)
 
 **Example**:
 ```
-AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 
 ### Variable 3: SECRET_KEY

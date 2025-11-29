@@ -55,7 +55,7 @@ postgresql+psycopg://username:password@host:port/database_name?sslmode=require
 
 **Value:**
 ```
-AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
+AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0
 ```
 
 **Status:** ✅ Ready to use
@@ -88,7 +88,7 @@ AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk
 3. **Add GEMINI_API_KEY**
    - Click **Add New**
    - **Name:** `GEMINI_API_KEY`
-   - **Value:** `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+   - **Value:** `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
    - Check: ✅ Production, ✅ Preview, ✅ Development
    - Click **Save**
 
@@ -148,7 +148,7 @@ The easiest option is to use **Vercel Postgres** because:
 ## 📋 Summary
 
 **Ready to add now:**
-- ✅ `GEMINI_API_KEY` = `AIzaSyCjOD2NE6zDxi9IrXUMsbwvWcCYA_lSjvk`
+- ✅ `GEMINI_API_KEY` = `AIzaSyAhsIzBUsUz2l-Oma_6TRdKj-Sei2HNqv0`
 - ✅ `SECRET_KEY` = `310dfc0e3e2ad00593be4039fa8bc53c3c6f90ff8965c8069c11c6998ea3e45b`
 
 **Need to set up first:**
